@@ -18,23 +18,23 @@
 #pragma mark default/reserved variables
 //the default variables for width and height are default sizes of the Terminal app on Mac where this was coded
 //width of array available, everything unused gets set to 0
-#define WIDTH       80
+#define WIDTH           80
 //height of array available, everything unused gets set to 0
-#define HEIGHT      24
+#define HEIGHT          24
 
 //in the definition of the array, we assume that 0 is used to increase visibility in most editors
-#define FREE        0       //free piece of land in game
-#define WALL        1       //wall
-#define W           WALL    //wall
-#define DOOR        2       //door to exit level
-#define D           DOOR    //door
-#define OBJ_FROM    100     //number from which objects start
-#define OBJ_TO      199     //number from which objects end
+#define FREE            0       //free piece of land in game
+#define WALL            1       //wall
+#define W               WALL    //wall
+#define DOOR            2       //door to exit level
+#define D               DOOR    //door
+#define OBJ_FROM        100     //number from which objects start
+#define OBJ_TO          199     //number from which objects end
 //  common things (walls, doors etc.) ->  00-09
 //  objects to collect                ->  10-99
 //  snake parts                       ->  100-119
-#define H           100     //snake head
-#define HEAD        H
+#define H               100     //snake head
+#define HEAD            H
 //      reserved variable names:
 //  a   = area
 //      a[i][j]     -   a[HEIGHT][WIDTH]
@@ -42,6 +42,8 @@
 //  w   = width
 //  h   = height
 //  a[row][coloumn]
+#define AREA_BGCOLOR    CYAN
+#define END             8191    //end of line. if value in end searcher is 8192, it realises that it is the end of the line/coloumn
 
 
 //  a = area
@@ -60,7 +62,7 @@ int area[HEIGHT][WIDTH] = {
     {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
     {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
     {W, H, 0, W, 0, 0, W, W, 0, 0, 0, W},
-    {W, W, W, W, W, W, W, W, W, W, W, W},
+    {W, W, W, W, W, W, W, W, W, W, W, W+END},
 };
 
 //  prints out the area and needs the WIDTH parameter because in memory, the numbers are one behind another so it can see how far it needs to go for a new line
@@ -73,23 +75,28 @@ void printArea(int a[][WIDTH], int w, int h) {
             c = a[i][j];
             if (c == WALL) {
                 setColor(LIGHTCYAN);
+                setBackgroundColor(RED);
                 printf("# ");
             }
             else if (c == FREE) {
                 setColor(LIGHTGREEN);
+                setBackgroundColor(BLUE);
                 printf("  ");
             }
             else if (c == HEAD) {
                 setColor(LIGHTRED);
+                setBackgroundColor(MAGENTA);
                 printf("~ ");
             }
             else if (c == DOOR) {
-                printf("\\ ");
                 setColor(LIGHTMAGENTA);
+                setBackgroundColor(DARKGREY);
+                printf("\\ ");
             }
             else {
-                printf("? ");
                 setColor(WHITE);
+                setBackgroundColor(BLACK);
+                printf("? ");
             }
         }
         printf("\n");
@@ -97,18 +104,23 @@ void printArea(int a[][WIDTH], int w, int h) {
     resetColor();   //resets color to the colors saved on the start of printArea()
 }
 #pragma mark testing()
-void testing() {
+void testing() {    //just to test features before putting them into run(), where they are in the 'temporary final' state
+    cls();          //clears screen, useful to 'preset' the cmd window
     hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
     printArea(area, 12, 12);
+    return;
 }
 void run() {
+    cls();          //clears screen, useful to 'preset' the cmd window
     hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
-    
+    return;
 }
 #pragma mark main()
 int main(int argc, const char * argv[]) {
+    saveDefaultColor();
     testing();
     
     //run();
+    resetColor();
     return 0;
 }
