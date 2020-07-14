@@ -27,11 +27,14 @@
 #define WALL        1       //wall
 #define W           WALL    //wall
 #define DOOR        2       //door to exit level
-#define OBJ_FROM    100
-#define OBJ_TO      199
+#define D           DOOR    //door
+#define OBJ_FROM    100     //number from which objects start
+#define OBJ_TO      199     //number from which objects end
 //  common things (walls, doors etc.) ->  00-09
 //  objects to collect                ->  10-99
 //  snake parts                       ->  100-119
+#define H           100     //snake head
+#define HEAD        H
 //      reserved variable names:
 //  a   = area
 //      a[i][j]     -   a[HEIGHT][WIDTH]
@@ -47,7 +50,7 @@
 #pragma mark setting area
 int area[HEIGHT][WIDTH] = {
     {W, W, W, W, W, W, W, W, W, W, W, W},
-    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
+    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, D},
     {W, 0, 0, W, 0, 0, 0, 0, 0, W, 0, W},
     {W, 0, 0, W, 0, 0, 0, 0, 0, W, 0, W},
     {W, 0, 0, W, 0, W, W, 0, 0, W, 0, W},
@@ -56,7 +59,7 @@ int area[HEIGHT][WIDTH] = {
     {W, 0, 0, 0, 0, W, W, 0, 0, W, 0, W},
     {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
     {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
-    {W, 0, 0, W, 0, 0, W, W, 0, 0, 0, W},
+    {W, H, 0, W, 0, 0, W, W, 0, 0, 0, W},
     {W, W, W, W, W, W, W, W, W, W, W, W},
 };
 
@@ -71,6 +74,10 @@ void printArea(int a[][WIDTH], int w, int h) {
                 printf("# ");
             else if (c == FREE)
                 printf("  ");
+            else if (c == HEAD)
+                printf("~ ");
+            else if (c == DOOR)
+                printf("\\ ");
             else
                 printf("? ");
         }
