@@ -66,29 +66,43 @@ int area[HEIGHT][WIDTH] = {
 //  prints out the area and needs the WIDTH parameter because in memory, the numbers are one behind another so it can see how far it needs to go for a new line
 #pragma mark printArea() function
 void printArea(int a[][WIDTH], int w, int h) {
+    saveDefaultColor(); //saves color that has been used before to set it back later
     int c;  //current point going through
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
             c = a[i][j];
-            if (c == WALL)
+            if (c == WALL) {
+                setColor(LIGHTCYAN);
                 printf("# ");
-            else if (c == FREE)
+            }
+            else if (c == FREE) {
+                setColor(LIGHTGREEN);
                 printf("  ");
-            else if (c == HEAD)
+            }
+            else if (c == HEAD) {
+                setColor(LIGHTRED);
                 printf("~ ");
-            else if (c == DOOR)
+            }
+            else if (c == DOOR) {
                 printf("\\ ");
-            else
+                setColor(LIGHTMAGENTA);
+            }
+            else {
                 printf("? ");
+                setColor(WHITE);
+            }
         }
         printf("\n");
     }
+    resetColor();   //resets color to the colors saved on the start of printArea()
 }
 #pragma mark testing()
 void testing() {
+    hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
     printArea(area, 12, 12);
 }
 void run() {
+    hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
     
 }
 #pragma mark main()
