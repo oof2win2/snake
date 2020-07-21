@@ -10,12 +10,6 @@
 #include <stdlib.h>
 #include "rlutil.h"
 
-/*
- TODO::
- -Change area from global array to local array, as more levels would fuck this up
- */
-
-#pragma mark default/reserved variables
 //the default variables for width and height are default sizes of the Terminal app on Mac where this was coded
 //width of array available, everything unused gets set to 0
 #define WIDTH           80
@@ -46,10 +40,12 @@
 #define END             8191    //end of line. if value in end searcher is 8192, it realises that it is the end of the line/coloumn
 
 
+#include "area.c"
+
 //  a = area
 //  a[coloumn][row]
 //  program uses [HEIGHT][WIDTH] because double arrays when entered in (every array on 2nd level has a new line) means that the second must be rows and the first variable must be columns
-#pragma mark setting area
+
 int area[HEIGHT][WIDTH] = {
     {W, W, W, W, W, W, W, W, W, W, W, W},
     {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, D},
@@ -65,45 +61,17 @@ int area[HEIGHT][WIDTH] = {
     {W, W, W, W, W, W, W, W, W, W, W, W+END},
 };
 
-//  prints out the area and needs the WIDTH parameter because in memory, the numbers are one behind another so it can see how far it needs to go for a new line
-#pragma mark printArea() function
-void printArea(int a[][WIDTH], int w, int h) {
-    saveDefaultColor(); //saves color that has been used before to set it back later
-    int c;  //current point going through
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            c = a[i][j];
-            if (c == WALL) {
-                setColor(LIGHTCYAN);
-                setBackgroundColor(RED);
-                printf("# ");
-            }
-            else if (c == FREE) {
-                setColor(LIGHTGREEN);
-                setBackgroundColor(BLUE);
-                printf("  ");
-            }
-            else if (c == HEAD) {
-                setColor(LIGHTRED);
-                setBackgroundColor(MAGENTA);
-                printf("~ ");
-            }
-            else if (c == DOOR) {
-                setColor(LIGHTMAGENTA);
-                setBackgroundColor(DARKGREY);
-                printf("\\ ");
-            }
-            else {
-                setColor(WHITE);
-                setBackgroundColor(BLACK);
-                printf("? ");
-            }
-        }
-        printf("\n");
-    }
-    resetColor();   //resets color to the colors saved on the start of printArea()
-}
-#pragma mark testing()
+struct {
+    int key;
+    int dx;
+    int dy;
+} arrow_move[4] = {
+    {KEY_UP, 0, -1},
+    {KEY_DOWN, 0, 1},
+    {KEY_LEFT, -1, 0},
+    {KEY_RIGHT, 1, 0},
+};
+
 void testing() {    //just to test features before putting them into run(), where they are in the 'temporary final' state
     cls();          //clears screen, useful to 'preset' the cmd window
     hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
@@ -113,14 +81,40 @@ void testing() {    //just to test features before putting them into run(), wher
 void run() {
     cls();          //clears screen, useful to 'preset' the cmd window
     hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
+    
+    struct areaSize size;
+    size = getAreaSize(area);
+    
+    cls();
+    printArea(area, size.w, size.h);
+    int k = 0, j = 0;
+    while (1) {
+        //msleep(10);  //this value is because most displays are 60fps, so if you update ~2x per frame, you get less
+        k++;
+        if (k % 1 == 0)
+            printf("%d\n", ++j);
+        if (kbhit()) {
+            int key;
+            key = getkey();
+            if (key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT) {
+                for (int i = 0; i < 4; i++) {
+                    if (arrow_move[i].key == key) {
+                        moveHead(area, arrow_move[i].dx, arrow_move[i].dy, size.w, size.h);
+                        printArea(area, size.w, size.h);
+                    }
+                }
+            }
+        }
+    }
     return;
 }
-#pragma mark main()
+
+
 int main(int argc, const char * argv[]) {
     saveDefaultColor();
     testing();
     
-    //run();
-    resetColor();
+    run();
+    //resetColor();
     return 0;
 }
