@@ -21,7 +21,7 @@ Code is located in the `snake` folder, `snake.xcodeproj` is useful only when run
 
 #  TODO LIST
 ---
-- [ ] code function `getAreaSize()` , which returns the size of the map/game area in a data type of a structure and removes the stop. The stop is saved as the reserved variable `END` - for example like this:
+- [X] code function `getAreaSize()` , which returns the size of the map/game area in a data type of a structure and removes the stop. The stop is saved as the reserved variable `END` - for example like this:
 `struct area_size() {
     int w;
     int h;
