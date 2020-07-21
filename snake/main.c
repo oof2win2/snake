@@ -87,12 +87,8 @@ void run() {
     
     cls();
     printArea(area, size.w, size.h);
-    int k = 0, j = 0;
     while (1) {
-        //msleep(10);  //this value is because most displays are 60fps, so if you update ~2x per frame, you get less
-        k++;
-        if (k % 1 == 0)
-            printf("%d\n", ++j);
+        msleep(10);  //this value is because most displays are 60fps, so if you update ~2x per frame, you get less
         if (kbhit()) {
             int key;
             key = getkey();
