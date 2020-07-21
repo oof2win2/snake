@@ -46,7 +46,7 @@
 #define END             8191    //end of line. if value in end searcher is 8192, it realises that it is the end of the line/coloumn
 
 
-#include "DONOTarea.c"
+#include "area.c"
 
 //  a = area
 //  a[coloumn][row]
@@ -83,6 +83,11 @@ void run() {
     struct areaSize size;
     size = getAreaSize(area);
     printArea(area, size.w, size.h);
+    for (int i = 0; i < 10; i++) {
+        msleep(500);
+        printArea(area, size.h, size.w);
+        moveHead(area, 0, size.w, size.h);
+    }
     return;
 }
 #pragma mark main()

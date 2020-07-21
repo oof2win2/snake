@@ -14,6 +14,7 @@ struct areaSize {
 #pragma mark printArea() function
 void printArea(int a[][WIDTH], int w, int h) {
     saveDefaultColor(); //saves color that has been used before to set it back later
+    gotoxy(1, 1);   //uses gotoxy instead of cls to prevent flickering on windows computers
     int c;  //current point going through
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
@@ -65,4 +66,22 @@ struct areaSize getAreaSize(int a[][WIDTH]) {
     size.h = HEIGHT;
     size.w = WIDTH;
     return size;
+}
+
+//moving head. x, y = direction of movement
+//  -1  = left/up
+//  0   = stay
+//  1   = right/down
+//dx, dy = deltax, deltay - change in x and y
+void moveHead(int a[][WIDTH], int dx, int dy, int w, int h) {
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            if (a[i][j] == HEAD) {
+                if (a[i+dy][j+dx] == FREE) {
+                    a[i][j] = FREE;
+                    a[i+dy][j+dx] = HEAD;
+                }
+            }
+        }
+    }
 }
