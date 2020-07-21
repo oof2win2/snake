@@ -86,7 +86,7 @@ void run() {
     for (int i = 0; i < 10; i++) {
         msleep(500);
         printArea(area, size.h, size.w);
-        moveHead(area, 0, size.w, size.h);
+        moveHead(area, 0, -1, size.w, size.h);
     }
     return;
 }

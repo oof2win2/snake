@@ -74,12 +74,12 @@ struct areaSize getAreaSize(int a[][WIDTH]) {
 //  1   = right/down
 //dx, dy = deltax, deltay - change in x and y
 void moveHead(int a[][WIDTH], int dx, int dy, int w, int h) {
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            if (a[i][j] == HEAD) {
-                if (a[i+dy][j+dx] == FREE) {
-                    a[i][j] = FREE;
-                    a[i+dy][j+dx] = HEAD;
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            if (a[y][x] == HEAD) {
+                if (y + dy >= 0 && y + dy < h && x + dx >= 0 && x+dx < w && a[y+dy][x+dx] == FREE) {
+                    a[y][x] = FREE;
+                    a[y+dy][x+dx] = HEAD;
                 }
             }
         }
