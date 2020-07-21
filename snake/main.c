@@ -82,11 +82,27 @@ void run() {
     
     struct areaSize size;
     size = getAreaSize(area);
+    
+    cls();
     printArea(area, size.w, size.h);
-    for (int i = 0; i < 10; i++) {
-        msleep(500);
-        printArea(area, size.h, size.w);
-        moveHead(area, 0, -1, size.w, size.h);
+    while (1) {
+        usleep(100);
+        if (kbhit()) {
+            int key, dx = 0, dy = 0;
+            key = getkey();
+            if (key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT) {  //function for movement
+                if (key == KEY_UP)
+                    dy = -1;
+                else if (key == KEY_DOWN)
+                    dy = 1;
+                else if (key == KEY_LEFT)
+                    dx = -1;
+                else if (key == KEY_RIGHT)
+                    dx = 1;
+                moveHead(area, dx, dy, size.w, size.h);
+                printArea(area, size.w, size.h);
+            }
+        }
     }
     return;
 }
