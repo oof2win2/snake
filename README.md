@@ -12,7 +12,6 @@ Every file other than main.c and rlutil.h should not be compiled separately. In 
 `rlutil.h` is a utility not made by me, therefore it is not added in this repository (as of 21. June). The link to it is [here instead](https://github.com/tapio/rlutil)
 
 ---
-Uses `#pragma mark` for visual assistance on the sliding menu in Xcode, may be an issue when running on Windows - `#pragma mark` is used everywhere **EXCEPT**  `rlutil/h`, which is a library by Tapio to have colors in Terminal/cmd.
 May also have issues when running on Windows, as it has been built using UTF-8 character encodings (Windows cmd uses regional encoding)
 Go [here](https://github.com/tapio/rlutil) to see the library of `rlutil` on GitHub (has a wiki).
 
