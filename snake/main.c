@@ -39,6 +39,15 @@
 #define AREA_BGCOLOR    CYAN
 #define END             8191    //end of line. if value in end searcher is 8192, it realises that it is the end of the line/coloumn
 
+int score = 0;
+
+struct {
+    int print;
+    int maxscore;
+    int objects;
+    int w;
+    int h;
+} debug;
 
 #include "area.c"
 
@@ -79,29 +88,52 @@ void testing() {    //just to test features before putting them into run(), wher
     return;
 }
 void run() {
-    cls();          //clears screen, useful to 'preset' the cmd window
-    hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
-    
     struct areaSize size;
-    size = getAreaSize(area);
+    saveDefaultColor();
     
+    setBackgroundColor(BLACK);
     cls();
+    hidecursor();
+    
+    size = getAreaSize(area);
+    debug.print = 1;
+    debug.maxscore = debug.maxscore;
+    debug.objects = debug.objects;
+    debug.w = size.w;
+    debug.h = size.h;
+    
     printArea(area, size.w, size.h);
     while (1) {
-        msleep(10);  //this value is because most displays are 60fps, so if you update ~2x per frame, you get less
+        msleep(10);
         if (kbhit()) {
-            int key;
+            int key, i;
+            
             key = getkey();
-            if (key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT) {
-                for (int i = 0; i < 4; i++) {
-                    if (arrow_move[i].key == key) {
-                        moveHead(area, arrow_move[i].dx, arrow_move[i].dy, size.w, size.h);
-                        printArea(area, size.w, size.h);
-                    }
+            for (i = 0; i < 4; i++) {
+                if (arrow_move[i].key == key) {
+                    moveHead(area, size.w, size.h, arrow_move[i].dx, arrow_move[i].dy);
+                    printArea(area, size.w, size.h);
+                    break;
+                }
+            }
+                // if int i is 4, the key was not a number
+            if (i == 4) {
+                if (key == KEY_ESCAPE) {
+                    break; // end while(1)
                 }
             }
         }
     }
+    
+    //some lines just for compat reaasons on Windows, as that does weird things when clearing the Terminal window
+    setBackgroundColor(BLACK);
+    cls();
+    resetColor();
+    showcursor();
+    
+    //just for debug
+    setColor(GREY);
+    setBackgroundColor(BLACK);
     return;
 }
 
