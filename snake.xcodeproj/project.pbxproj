@@ -94,7 +94,7 @@
 		7E517DC724B4CE3A004216D5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = Honza;
 				TargetAttributes = {
 					7E517DCE24B4CE3A004216D5 = {
@@ -244,6 +244,7 @@
 		7E517DD724B4CE3A004216D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -253,6 +254,7 @@
 		7E517DD824B4CE3A004216D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

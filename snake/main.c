@@ -77,17 +77,13 @@ struct {
 } arrow_move[4] = {
     {KEY_UP, 0, -1},
     {KEY_DOWN, 0, 1},
-    {KEY_LEFT, -1, 0},
     {KEY_RIGHT, 1, 0},
+    {KEY_LEFT, -1, 0}
 };
 
-void testing() {    //just to test features before putting them into run(), where they are in the 'temporary final' state
-    cls();          //clears screen, useful to 'preset' the cmd window
-    hidecursor();   //hides the cursor from the terminal window (only the pointer to where you're typing
-    printArea(area, 12, 12);
-    return;
-}
-void run() {
+
+int main()
+{
     struct areaSize size;
     saveDefaultColor();
     
@@ -103,6 +99,7 @@ void run() {
     debug.h = size.h;
     
     printArea(area, size.w, size.h);
+    
     while (1) {
         msleep(10);
         if (kbhit()) {
@@ -116,33 +113,23 @@ void run() {
                     break;
                 }
             }
-                // if int i is 4, the key was not a number
+                // pokud je v i 4, tak v key nebyla sipka
             if (i == 4) {
                 if (key == KEY_ESCAPE) {
-                    break; // end while(1)
+                    break; // ukonÄŤĂ­me while(1)
                 }
             }
         }
     }
     
-    //some lines just for compat reaasons on Windows, as that does weird things when clearing the Terminal window
     setBackgroundColor(BLACK);
     cls();
     resetColor();
     showcursor();
     
-    //just for debug
+        // Ty jsou pouze kvuli ladeni
     setColor(GREY);
     setBackgroundColor(BLACK);
-    return;
-}
-
-
-int main(int argc, const char * argv[]) {
-    saveDefaultColor();
-    testing();
     
-    run();
-    //resetColor();
     return 0;
 }

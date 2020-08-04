@@ -22,4 +22,3 @@ struct object {
         // 4 = STAR
     {"*", BLUE, AREA_BGCOLOR, 200}
 };
-
