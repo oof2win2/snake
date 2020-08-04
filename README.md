@@ -4,6 +4,14 @@ A game of snake from the old Nokia phones, basically.
 Personal project over the holidays of 2020, during/after quarantine.
 
 ---
+## Game Features
+
+- When playing and you press the Enter key, the game toggles the debug output
+- When `esc` is pressed, the game exits
+- When all objects are collected, you must go into the door, which changes graphics when it can be gone into. The game prints that you have won and you must press any key to continue
+
+---
+
 ## REQUIREMENTS:
 This app requires `rlutil.h`, an extension to allow colors and some extra features in Terminal. It is a utility not made by me, therefore it is not added in this repository (as of 21. June). The link to it is [here instead](https://github.com/tapio/rlutil), as I may not have the latest version.
 
@@ -20,17 +28,3 @@ Go [here](https://github.com/tapio/rlutil) to see the library of `rlutil` on Git
 
 ---
 Code is located in the `snake` folder, `snake.xcodeproj` is useful only when running on a Mac in Xcode.
-
-
-#  TODO LIST
----
-- [X] code function `getAreaSize()` , which returns the size of the map/game area in a data type of a structure and removes the stop. The stop is saved as the reserved variable `END` - for example like this:
-`struct area_size() {
-    int w;
-    int h;
-}
-area_size.w
-area_size.h`
-(set 14. 7)
-
----

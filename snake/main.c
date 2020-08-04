@@ -10,26 +10,10 @@
 #include <stdlib.h>
 #include "rlutil.h"
 
-//the default variables for width and height are default sizes of the Terminal app on Mac where this was coded
-//width of array available, everything unused gets set to 0
-#define WIDTH           80
-//height of array available, everything unused gets set to 0
-#define HEIGHT          24
+//to fix the library not working on linux
+#undef  KEY_ENTER
+#define KEY_ENTER 10
 
-//in the definition of the array, we assume that 0 is used to increase visibility in most editors
-#define FREE            0       //free piece of land in game
-#define WALL            1       //wall
-#define W               WALL    //wall
-#define DOOR            2       //door to exit level
-#define D               DOOR    //door
-#define OBJ_FROM        100     //number from which objects start
-#define OBJ_TO          199     //number from which objects end
-//  common things (walls, doors etc.) ->  00-09
-//  objects to collect                ->  10-99
-//  snake parts                       ->  100-119
-#define H               100     //snake head
-#define HEAD            H
-//      reserved variable names:
 //  a   = area
 //      a[i][j]     -   a[HEIGHT][WIDTH]
 //      a[i][j]     -   i is smaller than 24, width is smaller than 80 (size of default terminal window
@@ -40,6 +24,11 @@
 #define END             8191    //end of line. if value in end searcher is 8192, it realises that it is the end of the line/coloumn
 
 int score = 0;
+int rem_objects;    //remaining number of objects on current level
+
+//  0 = game is running, 1 = game ended with a win, 2 = game ended with a loss, 3 = user wants to exit
+int finish = 0;
+
 
 struct {
     int print;
@@ -57,16 +46,16 @@ struct {
 
 int area[HEIGHT][WIDTH] = {
     {W, W, W, W, W, W, W, W, W, W, W, W},
-    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, D},
-    {W, 0, 0, W, 0, 0, 0, 0, 0, W, 0, W},
-    {W, 0, 0, W, 0, 0, 0, 0, 0, W, 0, W},
-    {W, 0, 0, W, 0, W, W, 0, 0, W, 0, W},
-    {W, 0, 0, W, 0, 0, W, 0, 0, W, 0, W},
-    {W, 0, 0, 0, 0, 0, W, W, W, W, 0, W},
-    {W, 0, 0, 0, 0, W, W, 0, 0, W, 0, W},
-    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
-    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 0, W},
-    {W, H, 0, W, 0, 0, W, W, 0, 0, 0, W},
+    {W, 1, 1, W, 1, 1, 1, 1, 1, 1, 1, D},
+    {W, 1, 1, W, 1, 0, 0, 0, 0, W, 1, W},
+    {W, 1, 1, W, 1, 0, 0, 0, 0, W, 1, W},
+    {W, 1, 1, W, 1, W, W, 0, 0, W, 1, W},
+    {W, 2, 1, W, 1, 0, W, 0, 0, W, 1, W},
+    {W, 3, 1, 1, 1, 0, W, W, W, W, 1, W},
+    {W, 4, 0, 0, 0, W, W, 0, 0, W, 1, W},
+    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 1, W},
+    {W, 0, 0, W, 0, 0, 0, 0, 0, 0, 1, W},
+    {W, H, 0, W, 0, 0, 0, 0, 0, 0, 1, W},
     {W, W, W, W, W, W, W, W, W, W, W, W+END},
 };
 
@@ -98,10 +87,12 @@ int main()
     debug.w = size.w;
     debug.h = size.h;
     
+    rem_objects = debug.objects;
+    
     printArea(area, size.w, size.h);
     
     while (1) {
-        msleep(10);
+        msleep(5);
         if (kbhit()) {
             int key, i;
             
@@ -116,18 +107,26 @@ int main()
                 // pokud je v i 4, tak v key nebyla sipka
             if (i == 4) {
                 if (key == KEY_ESCAPE) {
-                    break; // ukonÄŤĂ­me while(1)
+                    break; // end while loop
                 }
+                else if (key == KEY_ENTER) {
+                    debug.print = !debug.print;
+                    printArea(area, size.w, size.h);
+                }
+            }
+            if (finish == 1){
+                printf("Press ANY KEY to end game");
+                getch();
+                break;
             }
         }
     }
     
     setBackgroundColor(BLACK);
-    cls();
     resetColor();
     showcursor();
     
-        // Ty jsou pouze kvuli ladeni
+    //Only for debug
     setColor(GREY);
     setBackgroundColor(BLACK);
     

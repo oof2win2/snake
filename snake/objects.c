@@ -13,12 +13,12 @@ struct object {
     int  bgcolor; // barva pozadí
     int  points;  // body za sebrání
 } objects[] = {
-        // 1 v area = SRDCE
-    {"\x03", RED, AREA_BGCOLOR, 100},
-        // 2 = LISTEK
-    {"\x04", LIGHTGREEN, AREA_BGCOLOR, 400},
-        // 3 = SLUNICKO
-    {"\x0F", YELLOW, BROWN, 300},
-        // 4 = STAR
-    {"*", BLUE, AREA_BGCOLOR, 200}
+        // 1 in area[][] = HEART
+    {"\xE2\x99\xA5", RED, AREA_BGCOLOR, 100},
+        // 2 = LEAF
+    {"\xE2\x99\xA6", LIGHTGREEN, AREA_BGCOLOR, 400},
+        // 3 = SUN
+    {"\xE2\x98\xBC", YELLOW, BROWN, 300},
+        // 4 = STAR/CROSS
+    {"\xC3\x93", BLUE, AREA_BGCOLOR, 200}
 };
