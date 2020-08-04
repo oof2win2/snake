@@ -6,6 +6,9 @@
 //  Copyright © 2020 Honza. All rights reserved.
 //
 
+//TODO:
+//  -Allow the objects to animate
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "rlutil.h"
@@ -98,10 +101,12 @@ int main()
             
             key = getkey();
             for (i = 0; i < 4; i++) {
-                if (arrow_move[i].key == key) {
-                    moveHead(area, size.w, size.h, arrow_move[i].dx, arrow_move[i].dy);
-                    printArea(area, size.w, size.h);
-                    break;
+                if (!finish) {
+                    if (arrow_move[i].key == key) {
+                        moveHead(area, size.w, size.h, arrow_move[i].dx, arrow_move[i].dy);
+                        printArea(area, size.w, size.h);
+                        break;
+                    }
                 }
             }
                 // pokud je v i 4, tak v key nebyla sipka
@@ -114,15 +119,17 @@ int main()
                     printArea(area, size.w, size.h);
                 }
             }
+            
             if (finish == 1){
-                printf("Press ANY KEY to end game");
-                getch();
-                break;
+                if (key == KEY_ENTER){
+                    break;
+                }
             }
         }
     }
     
     setBackgroundColor(BLACK);
+    cls();
     resetColor();
     showcursor();
     

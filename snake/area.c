@@ -63,9 +63,9 @@ void printArea(int a[][WIDTH], int w, int h) {
                 
                 oi = a[i][j] - OBJ_FROM;
                 
-                setBackgroundColor(objects[oi].bgcolor);
-                setColor(objects[oi].color);
-                printf("%s", objects[oi].c);
+                setBackgroundColor(objects[oi].frames[0].bgcolor);
+                setColor(objects[oi].frames[0].color);
+                printf("%s", objects[oi].frames[0].c);
             }
             else {
                 setBackgroundColor(AREA_BGCOLOR);
@@ -98,6 +98,8 @@ void printArea(int a[][WIDTH], int w, int h) {
         printf("\xF0\x9F\xA7\xA8");
         printf("\xF0\x9F\xA7\xA8");
         printf("\xF0\x9F\xA7\xA8");
+        printf("\n\n");
+        printf("Press ENTER to continue");
     }
     printf("\n");
 }
