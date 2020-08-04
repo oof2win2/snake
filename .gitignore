@@ -1,6 +1,6 @@
 
 snake/rlutil.h
-*.xcodeproj
+*.xcodeproj/*
 *.pbxproj
 *.pbxproj
-snake.xcodeproj/project.pbxproj
+snake.xcodeproj/*
