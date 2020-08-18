@@ -17,8 +17,10 @@
     #undef  CLOCKS_PER_SEC
     #define CLOCKS_PER_SEC 15000
 #endif
-int finish = 0; /* 0 = game is running, 1 = game ended with a win, 2 = game ended with a loss, 3 = user wants to exit */
+
+int finish = 0; // 0 = game is running, 1 = game ended with a win, 2 = game ended with a loss, 3 = user wants to exit
 time_t timer = 0;  // a thing from rlutil to allow us to get the time from program start
+
 struct {
     int print;
     int maxscore;
@@ -28,9 +30,11 @@ struct {
 } debug;
 
 struct {
-    int score;
-    int rem_objects;
-    int door_x, door_y;
+    int score;          // the score of the player
+    int rem_objects;    // number of remaining objects
+    int door_x, door_y; // xy position of the door
+    int move_ms;        // delay in ms between movements of the snake
+    int start;          // the value in timer when the first key is pressed
 } game;
 
 #include "area.c"
@@ -80,6 +84,7 @@ int main() {
     game.rem_objects = size.objects;
     game.door_x = size.door_x;
     game.door_y = size.door_y;
+    game.move_ms = 1000;
     
     printArea(area, size.w, size.h, 0);
     
