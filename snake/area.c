@@ -125,6 +125,8 @@ void printArea(int a[][WIDTH], int w, int h, int save) {
     printnl();
     
     if (finish == 1) {
+        debug.print = 0;
+        cls();
         printf("Vitezstvi! Hra skoncila.\n");
         printf("Stiskni ENTER pro konec.\n");
         printnl();
@@ -138,11 +140,12 @@ void printArea(int a[][WIDTH], int w, int h, int save) {
     if (debug.print) {
         printnl();
         printnl();
-        printf("Max. score: %d\n", debug.maxscore);
-        printf("Celkem objektu: %d\n", debug.objects);
-        printf("Zbyva objektu: %d  \n", game.rem_objects);
+        printf("Max. score: %3d\n", debug.maxscore);
+        printf("Celkem objektu: %3d\n", debug.objects);
+        printf("Zbyva objektu: %3d  \n", game.rem_objects);
         printf("Finish: %d\n", finish);
-        printf("Timer: %ld s %ld ms\n", timer / 1000, timer % 1000);
+        printf("Timer: %ld s %ld ms.\n", timer / 1000, timer % 1000);
+        printf("Clock: %ld, CPS: %d\n", timer, CLOCKS_PER_SEC);
     }
 }
 

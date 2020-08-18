@@ -10,11 +10,14 @@
 #include <stdlib.h>
 #include "rlutil.h"
 
-    // to fix the library not working on linux
-#undef  KEY_ENTER
-#define KEY_ENTER 10
-
-int finish = 0; /* 0 = hra bÄ›ĹľĂ­, 1 = hra skonÄŤila ĂşspÄ›chem, 2 = hra skonÄŤila neĂşspÄ›chem, 3 = uĹľivatel skonÄŤil */
+// to fix the library not working on linux
+#ifndef _WIN32
+    #undef  KEY_ENTER
+    #define KEY_ENTER 10
+    #undef  CLOCKS_PER_SEC
+    #define CLOCKS_PER_SEC 15000
+#endif
+int finish = 0; /* 0 = game is running, 1 = game ended with a win, 2 = game ended with a loss, 3 = user wants to exit */
 time_t timer = 0;  // a thing from rlutil to allow us to get the time from program start
 struct {
     int print;
@@ -82,10 +85,10 @@ int main() {
     
     while (1) {
         msleep(10);
-        timer = clock() / CLOCKS_PER_SEC * 1000;
+        timer = clock() * 1000 / CLOCKS_PER_SEC;   // idk hard maths makes it work for calculation of ms
         
         if (kbhit()) {
-            int key, i;
+            int key, i; 
             
             key = getkey();
             
