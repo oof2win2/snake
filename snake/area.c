@@ -38,12 +38,17 @@
 #define  OBJ_FROM  1
 #define  OBJ_TO    99
 
+#define BODY_FROM   1000    // body of the snake. it therefore has a maximum of 100 spots it can be at the same time
+#define BODY_TO     1099
+#define MAX_BODY_LENGTH (BODY_TO - BODY_FROM)
+
 #define   END      999999
 
 #define  AREA_BGCOLOR    CYAN
 #define  PRG_BGCOLOR     BLACK
 
 #define OPENDOOR    7   // index in objects[]
+
 
 #include "objects.c"
 
@@ -55,6 +60,17 @@ struct areaSize {
     int maxscore;
     int door_x, door_y;
 };
+
+
+struct piece {
+    int x;
+    int y;
+    int pos;
+};
+struct {
+    struct piece pieces[MAX_BODY_LENGTH];
+} body;
+
 
 void printnl() {
     printf("\n");
@@ -124,14 +140,14 @@ void printArea(int a[][WIDTH], int w, int h, int save) {
     printf("Score: %d\n", game.score);
     printnl();
     
-    if (finish == 1) {
+    if (state == ST_WIN) {
         debug.print = 0;
         cls();
         printf("Vitezstvi! Hra skoncila.\n");
         printf("Stiskni ENTER pro konec.\n");
         printnl();
     }
-    else if (finish == 2) {
+    else if (state == ST_GAMEOVER) {
         printf("Pozor zed! Hra skoncila.\n");
         printf("Stiskni ENTER pro konec.\n");
         printnl();
@@ -143,11 +159,12 @@ void printArea(int a[][WIDTH], int w, int h, int save) {
         printf("Max. score: %3d\n", debug.maxscore);
         printf("Celkem objektu: %3d\n", debug.objects);
         printf("Zbyva objektu: %3d  \n", game.rem_objects);
-        printf("Finish: %d\n", finish);
+        printf("State: %d\n", state);
         printf("Timer: %ld s %ld ms.\n", timer / 1000, timer % 1000);
         printf("Clock: %ld, CPS: %d\n", timer, CLOCKS_PER_SEC);
     }
 }
+
 
 struct areaSize getAreaSize(int a[][WIDTH]) {
     struct areaSize size;
@@ -198,7 +215,7 @@ void moveHead(int a[][WIDTH], int w, int h, int dx, int dy) {
                     if (a[y + dy][x + dx] == FREE)
                         ;
                     else if (a[y + dy][x + dx] == OPENDOOR) {
-                        finish = 1;
+                        state = ST_WIN;
                     }
                     else if (a[y + dy][x + dx] >= OBJ_FROM && a[y + dy][x + dx] <= OBJ_TO) {
                         game.score += objects[ a[y + dy][x + dx] - OBJ_FROM].points;
@@ -209,7 +226,7 @@ void moveHead(int a[][WIDTH], int w, int h, int dx, int dy) {
                     }
                     else if (a[y + dy][x + dx] == WALL || a[y + dy][x + dx] == DOOR) {
                         a[y + dy][x + dx] = WALL_FIRE;
-                        finish = 2;
+                        state = ST_GAMEOVER;
                         return;
                     }
                     else
@@ -223,4 +240,38 @@ void moveHead(int a[][WIDTH], int w, int h, int dx, int dy) {
             }
         }
     }
+}
+
+
+void moveBody(int a[][WIDTH], int w, int h, int add) {
+    /*
+     This function moves the body, re-numbering it.
+     If add is 1, it will add a piece to the end of the snake.
+     If add is 0, it will just move the snake along
+    */
+    
+    int head_x = -1, head_y = -1;
+    for (int i = 0; i < game.length; i++) { // find the body
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                if (a[x][y] <= BODY_FROM && a[x][y] <= BODY_TO) {
+                    body.pieces[i].x = x;
+                    body.pieces[i].y = y;
+                    body.pieces[i].pos = i;
+                }
+                else if (a[x][y] == HEAD) {
+                    head_x = x;
+                    head_y = y;
+                }
+            }
+        }
+    }
+    
+    for (int i = 0; i < game.length + add; i++) {
+        body.pieces[i].x = body.pieces[i+1].x;
+        body.pieces[i].y = body.pieces[i+1].y;
+        body.pieces[i].pos = body.pieces[i+1].pos;
+    }
+    
+    return;
 }
